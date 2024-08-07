@@ -4,14 +4,25 @@ import styles from './EmailEditor.module.scss'
 import { Bold, Eraser, Italic, Underline } from 'lucide-react'
 import  {applyStyle, TStyle}  from './apply-style.ts'
 import parse from 'html-react-parser'
+import { emailService } from '../../services/email.service.tsx'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { EmailList } from '../email-list/EmailList.tsx'
 export function EmailEditor() {
-   const [text, setText] = useState(`Hey
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Amet porro, ducimus necessitatibus, sapiente aliquid vero minima deserunt nostrum, sint error eveniet facere iusto corporis id labore officiis et excepturi nihil!`)
+  
+   const [text, setText] = useState('')
         const [selectionStart, setSelectionStart] = useState(0)
         const [selectionEnd, setSelectionEnd] = useState(0)
 
    const textRef= useRef<HTMLTextAreaElement | null>(null)  
-   
+   const queryClient = useQueryClient()
+   const {mutate, isPending} = useMutation({
+    mutationKey:['create email'],
+    mutationFn:() => emailService.sendEmails(text),
+    onSuccess: () =>{
+      setText(' ')
+      queryClient.refetchQueries({queryKey: ['email list']})
+    }
+  })
    const updateSelection =() => {
         if (!textRef.current) return
         setSelectionStart(textRef.current.selectionStart)
@@ -34,8 +45,10 @@ export function EmailEditor() {
     }
     return (
    
-    <div>
+    <div className={styles.container}>
+      <div className={styles.editorContainer}>
       <h1>Email edditor</h1>
+      {/*{text && <div className={styles.preview}>{parse(text)} </div>}*/}
       <div className={styles.card}>
         <textarea 
         ref ={textRef}
@@ -54,11 +67,17 @@ export function EmailEditor() {
             <button onClick={() => applyFormat('italic')}><Italic /></button>
             <button onClick={() => applyFormat('underline')}><Underline /></button>
           </div>
-          <button>Send now</button>
+          <button disabled={isPending} onClick={() => mutate()}>Send now</button>
         </div>
       </div>
     </div>
+    <div className={styles.emailListContainer}>
+     <EmailList />
+     </div>
+     </div>
   )
 }
+
+
 
 

@@ -1,3 +1,24 @@
 {
-   "emails": [{"text": "a title"}]
+  "emails": [
+    {
+      "id": "1",
+      "text": "a title"
+    },
+    {
+      "id": "e8ee",
+      "text": "Hey\n        Lorem ipsum, dolor sit amet consectetur adip<u>isicing elit. Amet porro, </u>ducimus necessitatibus, sapiente aliquid vero minima deserunt nostrum, sint error eveniet facere iusto corporis id labore officiis et excepturi nihil!"
+    },
+    {
+      "id": "f545",
+      "text": "TWEkft<u>luig;kj/</u>ln k/nk<b>'np'o klo;gh;oh</b>"
+    },
+    {
+      "id": "0b63",
+      "text": "Привет<i> друг. Как дела?</i>"
+    },
+    {
+      "id": "c2c1",
+      "text": "<u>Устранение негативной энергии</u>"
+    }
+  ]
 }
